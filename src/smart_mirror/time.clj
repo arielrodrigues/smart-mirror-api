@@ -44,7 +44,9 @@
   :args (s/cat :base ::time/zoned-date-time :zones ::valid-timezone)
   :ret (s/coll-of ::time))
 (defn time+zones [base zones]
-  (->> zones
-       (map #(time/change-zone base %))
-       (cons base)
-       (map ->time)))
+  (if (empty? zones)
+    [base]
+    (->> zones
+         (map #(time/change-zone base %))
+         (cons base)
+         (map ->time))))
